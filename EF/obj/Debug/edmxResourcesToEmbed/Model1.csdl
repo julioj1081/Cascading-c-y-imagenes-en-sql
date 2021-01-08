@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PaisesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="PaisesEntities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="GetAllPaises" ReturnType="Collection(PaisesModel.GetAllPaises_Result)" />
+    <EntitySet Name="Estados" EntityType="PaisesModel.Estados" />
+    <EntitySet Name="Paises" EntityType="PaisesModel.Paises" />
+    <AssociationSet Name="FK_Estados_Paises" Association="PaisesModel.FK_Estados_Paises">
+      <End Role="Paises" EntitySet="Paises" />
+      <End Role="Estados" EntitySet="Estados" />
+    </AssociationSet>
+    <EntitySet Name="Imagenes" EntityType="PaisesModel.Imagenes" />
+  </EntityContainer>
+  <ComplexType Name="GetAllPaises_Result">
+    <Property Type="Int32" Name="IdPais" Nullable="false" />
+    <Property Type="String" Name="Pais" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="IdEstado" Nullable="false" />
+    <Property Type="String" Name="Estado" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <EntityType Name="Estados">
+    <Key>
+      <PropertyRef Name="IdEstado" />
+    </Key>
+    <Property Name="IdEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IdPais" Type="Int32" />
+    <NavigationProperty Name="Paises" Relationship="PaisesModel.FK_Estados_Paises" FromRole="Estados" ToRole="Paises" />
+  </EntityType>
+  <EntityType Name="Paises">
+    <Key>
+      <PropertyRef Name="IdPais" />
+    </Key>
+    <Property Name="IdPais" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pais" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Estados" Relationship="PaisesModel.FK_Estados_Paises" FromRole="Paises" ToRole="Estados" />
+  </EntityType>
+  <Association Name="FK_Estados_Paises">
+    <End Type="PaisesModel.Paises" Role="Paises" Multiplicity="0..1" />
+    <End Type="PaisesModel.Estados" Role="Estados" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paises">
+        <PropertyRef Name="IdPais" />
+      </Principal>
+      <Dependent Role="Estados">
+        <PropertyRef Name="IdPais" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Imagenes">
+    <Key>
+      <PropertyRef Name="IdImagen" />
+    </Key>
+    <Property Name="IdImagen" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreFoto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FOTO" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+</Schema>

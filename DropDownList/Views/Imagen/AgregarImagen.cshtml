@@ -1,0 +1,51 @@
+﻿@model DropDownList.Models.ImagenModelo
+@{
+    ViewBag.Title = "AgregarImagen";
+}
+
+<h2>AgregarImagen</h2>
+
+@using(Html.BeginForm("Guardar", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.IdImagen);
+            @Html.TextBoxFor(model => model.IdImagen, new { @class = "form-control hidden" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.NombreFoto);
+            @Html.TextBoxFor(model => model.NombreFoto, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-3">
+            <label>Foto</label>
+            @Html.Label("Foto");
+            <img width="200" height="200" id="imgFoto" style="display:block; margin: 1rem;" />
+            @Html.TextBox("foto", "", new { type = "file", id = "fupFoto" })
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" id="btnClose" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</div>
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    var imgFoto = document.getElementById("imgFoto");
+    var fupFoto = document.getElementById("fupFoto");
+    fupFoto.onchange = function () {
+        var files = fupFoto.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imgFoto.src = reader.result;
+            document.getElementById("nombreFoto").value = files.name;
+        }
+
+        reader.readAsDataURL(files);
+    }
+</script>

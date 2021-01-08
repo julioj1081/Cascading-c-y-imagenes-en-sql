@@ -1,0 +1,35 @@
+﻿@model DropDownList.Models.PaisesEstadosModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <div class="row" style="margin-top: 2em;">
+        <div class="form-group">
+            <label>Selecciona un pais</label>
+            @if (ViewBag.PaisesList != null)
+            {
+                @Html.DropDownListFor(model => model.IdPais, ViewBag.PaisesList as SelectList, "--Seleccione--", new { @class = "form-control" })
+            }
+        </div>
+        <div class="form-group">
+            <label>Selecciona un estado</label>
+            @Html.DropDownListFor(model => model.IdEstado, new SelectList(""), "--Seleccione Estado--", new { @class = "form-control" })
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#IdPais").change(function () {
+            $.get("/Home/GetEstados", { IdPais: $("#IdPais").val() }
+                ,
+                function (data) {
+                    $("#IdEstado").empty();
+                    $.each(data, function (index, row) {
+                        $("#IdEstado").append("<option value='"+row.IdEstado+"'>"+row.Estado+"</option>")
+                    });
+                });
+        })
+    })
+</script>
